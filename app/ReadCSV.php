@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Exceptions\FileNotExistException;
+
 class ReadCSV
 {
     public function __construct(private string $dirPath)
@@ -36,10 +38,13 @@ class ReadCSV
         return $files;
     }
 
+    /**
+     * @throws FileNotExistException
+     */
     private static function getTransactions(string $fileName, ?callable $transactionHandler = null): array
     {
         if (! file_exists($fileName)) {
-            trigger_error('File "' . $fileName . '" does not exist', E_USER_ERROR);
+            throw new FileNotExistException("File does not exist: $fileName");
         }
 
         $file = fopen($fileName, 'r');
