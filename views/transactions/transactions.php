@@ -34,22 +34,41 @@
                 </tr>
             </thead>
             <tbody>
-                <pre>
-                    <?= var_dump($transactions) ?>
-                </pre>
+            <?php if (!empty($transactions)) : ?>
+                <?php foreach ($transactions as $transaction) : ?>
+                    <tr>
+                        <td><?= date('M j, Y', strtotime($transaction['date'])) ?></td>
+                        <td><?= $transaction['checkNumber'] ?></td>
+                        <td><?= $transaction['description'] ?></td>
+                        <td>
+                            <?php if ($transaction['amount'] < 0) : ?>
+                                <span style="color: red;">
+                        <?= formatDollarAMount($transaction['amount']) ?>
+                    </span>
+                            <?php elseif ($transaction['amount'] > 0) : ?>
+                                <span style="color: green;">
+                        <?= formatDollarAMount($transaction['amount']) ?>
+                    </span>
+                            <?php else : ?>
+                                <?= formatDollarAMount($transaction['amount']) ?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
             </tbody>
             <tfoot>
                 <tr>
                     <th colspan="3">Total Income:</th>
-                    <td><!-- TODO --></td>
+                    <td><?= formatDollarAMount($totals['totalIncome']) ?? 0 ?></td>
                 </tr>
                 <tr>
                     <th colspan="3">Total Expense:</th>
-                    <td><!-- TODO --></td>
+                    <td><?= formatDollarAMount($totals['totalExpense']) ?? 0 ?></td>
                 </tr>
                 <tr>
                     <th colspan="3">Net Total:</th>
-                    <td><!-- TODO --></td>
+                    <td><?= formatDollarAMount($totals['netTotal']) ?? 0 ?></td>
                 </tr>
             </tfoot>
         </table>

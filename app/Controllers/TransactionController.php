@@ -32,6 +32,9 @@ class TransactionController
         $transactionModel = new Transaction();
         (new SignUp($transactionModel))->register($transactions);
 
-        return View::make('transactions/transactions', ['transactions' => $transactionModel->find_all()]);
+        return View::make(
+            'transactions/transactions',
+            ['transactions' => $transactionModel->find_all(), 'totals' => calculateTotals($transactions)]
+        );
     }
 }

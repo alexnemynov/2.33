@@ -7,6 +7,7 @@ use App\Config;
 use App\Controllers\HomeController;
 use App\Controllers\TransactionController;
 use App\Router;
+require __DIR__ . '/../app/helpers.php';
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
