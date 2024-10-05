@@ -34,7 +34,9 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- TODO -->
+                <pre>
+                    <?= var_dump($transactions) ?>
+                </pre>
             </tbody>
             <tfoot>
                 <tr>

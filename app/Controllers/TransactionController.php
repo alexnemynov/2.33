@@ -2,8 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Models\SignUp;
 use App\Models\Transaction;
-use app\Models\User;
+use App\ReadCSV;
 use App\View;
 
 class TransactionController
@@ -27,10 +28,10 @@ class TransactionController
 
     public function table(): View
     {
-
-
+        $transactions = (new ReadCSV(STORAGE_PATH))->run();
         $transactionModel = new Transaction();
+        (new SignUp($transactionModel))->register($transactions);
 
-        return View::make('transactions/transactions');
+        return View::make('transactions/transactions', ['transactions' => $transactionModel->find_all()]);
     }
 }
