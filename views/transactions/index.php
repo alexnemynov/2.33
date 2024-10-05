@@ -8,10 +8,9 @@
         <title>Document</title>
     </head>
     <body>
-        Transactions
+        Upload transactions files in CSV format
         <form action="/upload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="receipt[]" />
-            <input type="file" name="receipt[]" />
+            <input type="file" name="transaction_files[]" accept="text/csv" multiple/>
             <button type="submit">Upload</button>
         </form>
     </body>

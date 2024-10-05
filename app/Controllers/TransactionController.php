@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\Transaction;
+use app\Models\User;
 use App\View;
 
 class TransactionController
@@ -13,9 +15,11 @@ class TransactionController
 
     public function upload(): void
     {
-        $filePath = STORAGE_PATH . '/' . $_FILES["receipt"]["name"][0];
-
-        move_uploaded_file($_FILES["receipt"]["tmp_name"][0], $filePath);
+        foreach ($_FILES["transaction_files"]["name"] as $key => $value) {
+            move_uploaded_file(
+                $_FILES["transaction_files"]["tmp_name"][$key],
+                STORAGE_PATH . '/' . $_FILES["transaction_files"]["name"][$key]);
+        }
 
         header('Location: /transactions/table');
         exit(); // чтобы убедиться, что код не выполняется дальше
@@ -23,6 +27,10 @@ class TransactionController
 
     public function table(): View
     {
+
+
+        $transactionModel = new Transaction();
+
         return View::make('transactions/transactions');
     }
 }
