@@ -11,7 +11,7 @@ class SignUp extends Model
         parent::__construct();
     }
 
-    public function register(array $array): void
+    public function register(array $array): bool
     {
         try {
             $this->db->beginTransaction();
@@ -20,9 +20,10 @@ class SignUp extends Model
             $this->db->commit();
         } catch (\Throwable $e) {
             if ($this->db->inTransaction()) {
-                echo $e->getMessage();
                 $this->db->rollBack();
+                return false;
             }
         }
+        return true;
     }
 }

@@ -21,13 +21,9 @@ class TransactionController
      */
     public function upload(): void
     {
-        if (empty($_FILES["transaction_files"])) {
-            throw new TransactionsNotExistException('Transaction have not sent');
-        }
-
         foreach ($_FILES["transaction_files"]["name"] as $key => $value) {
             if (! str_ends_with($value, ".csv")) {
-                throw new TransactionsNotExistException('Transaction is in invalid format');
+                throw new TransactionsNotExistException('Transaction have not sent or is in invalid format');
             }
             move_uploaded_file(
                 $_FILES["transaction_files"]["tmp_name"][$key],
@@ -42,7 +38,11 @@ class TransactionController
     {
         $transactions = (new ReadCSV(STORAGE_PATH))->run();
         $transactionModel = new Transaction();
-        (new SignUp($transactionModel))->register($transactions);
+        if (! (new SignUp($transactionModel))->register($transactions)) {
+            http_response_code(404);
+
+            echo View::make('error/404');
+        };
 
         return View::make(
             'transactions/transactions',
